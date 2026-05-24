@@ -65,7 +65,7 @@ def do_train_stage2_joint(cfg,
 
     loss_meter = AverageMeter()
     acc_meter = AverageMeter()
-    evaluator = R1_mAP_eval(num_query, max_rank=50, feat_norm=cfg.TEST.FEAT_NORM)
+    evaluator = R1_mAP_eval(num_query, max_rank=50, feat_norm=cfg.TEST.FEAT_NORM, dataset_name=cfg.DATASETS.NAMES)
     scaler = amp.GradScaler()
     xent = SupConLoss(device)
 
