@@ -1,0 +1,6 @@
+.omc/
+.vscode/
+
+checkpoints/
+datasets/
+*.pth

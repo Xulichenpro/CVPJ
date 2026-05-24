@@ -28,10 +28,10 @@ DATALOADER:
 SOLVER:
   STAGE1:
     IMS_PER_BATCH: 64
-    OPTIMIZER_NAME: "Adam"
+    OPTIMIZER_NAME: "AdamW"
     BASE_LR: 0.00035
-    WARMUP_LR_INIT: 0.00001
-    LR_MIN: 1e-6
+    WARMUP_LR_INIT: 0.0001
+    LR_MIN: 1e-5
     WARMUP_METHOD: 'linear'
     WEIGHT_DECAY:  1e-4
     WEIGHT_DECAY_BIAS: 1e-4
@@ -42,7 +42,7 @@ SOLVER:
   
   STAGE2:
     IMS_PER_BATCH: 64
-    OPTIMIZER_NAME: "Adam"
+    OPTIMIZER_NAME: "AdamW"
     BASE_LR: 0.000005
     WARMUP_METHOD: 'linear'
     WARMUP_ITERS: 10
@@ -63,18 +63,18 @@ TEST:
   EVAL: True
   IMS_PER_BATCH: 64
   RE_RANKING: False
-  WEIGHT: '..\checkpoints\Market1501_clipreid_12x12sie_ViT-B-16_60.pth'
+  WEIGHT: './logs/ccvid/ViT-B-16_60.pth'
   NECK_FEAT: 'before'
   FEAT_NORM: 'yes'
 
 DATASETS:
-#   NAMES: ('market1501')
-#   ROOT_DIR: '..\datasets'
-# OUTPUT_DIR: 'market-logs'
+  NAMES: ('market1501')
+  ROOT_DIR: '..\datasets'
+OUTPUT_DIR: 'logs/market-lr'
 
-  NAMES: ('ccvid')
-  ROOT_DIR: ('..\datasets')
-OUTPUT_DIR: 'logs\ccvid'
+#   NAMES: ('ccvid')
+#   ROOT_DIR: ('..\datasets')
+# OUTPUT_DIR: 'logs\ccvid2'
 
   # NAMES: ('Move')
   # ROOT_DIR: ('..\datasets')

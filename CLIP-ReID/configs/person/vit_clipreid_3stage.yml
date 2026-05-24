@@ -51,10 +51,10 @@ SOLVER:
     WEIGHT_DECAY:  0.0001
     WEIGHT_DECAY_BIAS: 0.0001
     LARGE_FC_LR: False
-    MAX_EPOCHS: 60
-    CHECKPOINT_PERIOD: 60
+    MAX_EPOCHS: 5
+    CHECKPOINT_PERIOD: 5
     LOG_PERIOD: 50
-    EVAL_PERIOD: 60
+    EVAL_PERIOD: 5
     BIAS_LR_FACTOR: 2
     STEPS: [30, 50]
     GAMMA: 0.1
@@ -90,7 +90,7 @@ TEST:
   FEAT_NORM: 'yes'
 
 DATASETS:
-  NAMES: ('ccvid')
+  NAMES: ('market1501')
   ROOT_DIR: ('..\datasets')
 
-OUTPUT_DIR: 'logs\ccvid_3stage'
+OUTPUT_DIR: 'logs\market1501_3stage'
