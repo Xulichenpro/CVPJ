@@ -25,7 +25,7 @@ def cosine_similarity(qf, gf):
     return dist_mat
 
 
-def eval_func(distmat, q_pids, g_pids, q_camids, g_camids, max_rank=50):
+def eval_func(distmat, q_pids, g_pids, q_camids, g_camids, max_rank=50,dataset_name = None):
     """Evaluation with market1501 metric
         Key: for each query identity, its gallery images from the same camera view are discarded.
         """
@@ -51,8 +51,12 @@ def eval_func(distmat, q_pids, g_pids, q_camids, g_camids, max_rank=50):
 
         # remove gallery samples that have the same pid and camid with query
         order = indices[q_idx]  # select one row
-        remove = (g_pids[order] == q_pid) & (g_camids[order] == q_camid)
-        keep = np.invert(remove)
+        # special processing for ccvid
+        if str(dataset_name).lower() == "ccvid":
+            keep = np.ones_like(order, dtype=bool)
+        else:
+            remove = (g_pids[order] == q_pid) & (g_camids[order] == q_camid)
+            keep = np.invert(remove)
 
         # compute cmc curve
         # binary vector, positions with value 1 are correct matches
@@ -88,12 +92,13 @@ def eval_func(distmat, q_pids, g_pids, q_camids, g_camids, max_rank=50):
 
 
 class R1_mAP_eval():
-    def __init__(self, num_query, max_rank=50, feat_norm=True, reranking=False):
+    def __init__(self, num_query, max_rank=50, feat_norm=True, reranking=False,dataset_name=None):
         super(R1_mAP_eval, self).__init__()
         self.num_query = num_query
         self.max_rank = max_rank
         self.feat_norm = feat_norm
         self.reranking = reranking
+        self.dataset_name = dataset_name
 
     def reset(self):
         self.feats = []
@@ -128,7 +133,14 @@ class R1_mAP_eval():
         else:
             print('=> Computing DistMat with euclidean_distance')
             distmat = euclidean_distance(qf, gf)
-        cmc, mAP = eval_func(distmat, q_pids, g_pids, q_camids, g_camids)
+        cmc, mAP = eval_func(
+            distmat,
+            q_pids,
+            g_pids,
+            q_camids,
+            g_camids,
+            dataset_name=self.dataset_name,
+        )
 
         return cmc, mAP, distmat, self.pids, self.camids, qf, gf
 
